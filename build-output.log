@@ -1,0 +1,25 @@
+- Generating browser application bundles (phase: setup)...
+✔ Browser application bundle generation complete.
+✔ Browser application bundle generation complete.
+- Copying assets...
+✔ Copying assets complete.
+- Generating index html...
+✔ Index html generation complete.
+
+Initial Chunk Files                                 | Names                                 |  Raw Size
+vendor.js                                           | vendor                                |   6.35 MB |
+styles.css                                          | styles                                | 489.47 kB |
+polyfills.js                                        | polyfills                             | 104.20 kB |
+main.js                                             | main                                  |  26.10 kB |
+runtime.js                                          | runtime                               |  12.06 kB |
+
+| Initial Total                         |   6.96 MB
+
+Lazy Chunk Files                                    | Names                                 |  Raw Size
+src_app_features_dashboard_dashboard_module_ts.js   | features-dashboard-dashboard-module   |  28.12 kB |
+src_app_features_expenses_expenses_module_ts.js     | features-expenses-expenses-module     |  24.94 kB |
+src_app_features_reports_reports_module_ts.js       | features-reports-reports-module       |  18.21 kB |
+src_app_features_categories_categories_module_ts.js | features-categories-categories-module |  13.39 kB |
+common.js                                           | common                                |   7.22 kB |
+
+Build at: 2026-10-27T11:07:02.738Z - Hash: 370c78ce19e2be67 - Time: 5829ms

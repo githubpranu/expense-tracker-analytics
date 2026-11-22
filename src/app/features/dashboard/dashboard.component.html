@@ -1,0 +1,111 @@
+<div class="grid">
+  <blui-score-card
+    class="grid__item"
+    headerTitle="Total Spent"
+    headerSubtitle="All time"
+    headerInfo="Across all categories"
+  >
+    <div blui-body class="score">
+      <blui-channel-value [value]="((total$ | async) | number: '1.2-2') ?? ''" [units]="(currencySymbol$ | async) ?? '$'" [prefix]="true" [unitSpace]="'hide'">
+      </blui-channel-value>
+    </div>
+  </blui-score-card>
+
+  <blui-score-card
+    class="grid__item"
+    headerTitle="This Month"
+    headerSubtitle="Current period"
+    headerInfo="Spending so far"
+  >
+    <div blui-body class="score">
+      <blui-channel-value
+        [value]="((monthTotal$ | async) | number: '1.2-2') ?? ''"
+        [units]="(currencySymbol$ | async) ?? '$'"
+        [prefix]="true"
+        [unitSpace]="'hide'"
+      >
+      </blui-channel-value>
+    </div>
+  </blui-score-card>
+
+  <blui-score-card
+    class="grid__item"
+    headerTitle="Transactions"
+    headerSubtitle="Recorded"
+    headerInfo="Total entries"
+  >
+    <div blui-body class="score">
+      <blui-channel-value [value]="(count$ | async) ?? 0"> </blui-channel-value>
+    </div>
+  </blui-score-card>
+
+  <blui-score-card
+    class="grid__item"
+    headerTitle="Top Category"
+    headerSubtitle="Highest spend"
+    [headerInfo]="(topCategory$ | async)?.category?.label ?? 'No data'"
+  >
+    <div blui-body class="score" *ngIf="topCategory$ | async as top; else noTop">
+      <blui-channel-value [value]="(top.total | number: '1.2-2') ?? ''" [units]="(currencySymbol$ | async) ?? '$'" [prefix]="true" [unitSpace]="'hide'">
+      </blui-channel-value>
+    </div>
+    <ng-template #noTop>
+      <div blui-body class="score score--muted">—</div>
+    </ng-template>
+  </blui-score-card>
+</div>
+
+<div class="panels">
+  <mat-card class="panel">
+    <h3 class="panel__title">Spending by Category</h3>
+    <mat-divider></mat-divider>
+    <div class="breakdown" *ngIf="(categoryTotals$ | async)?.length; else emptyBreakdown">
+      <div class="breakdown__row" *ngFor="let ct of categoryTotals$ | async">
+        <mat-icon class="breakdown__icon" [style.color]="ct.category.color">
+          {{ ct.category.icon }}
+        </mat-icon>
+        <div class="breakdown__meta">
+          <div class="breakdown__label">
+            <span>{{ ct.category.label }}</span>
+            <span class="breakdown__amount">{{ ct.total | currency: ((currencyCode$ | async) ?? 'USD') }}</span>
+          </div>
+          <div class="breakdown__bar">
+            <div
+              class="breakdown__bar-fill"
+              [style.width.%]="ct.percentage"
+              [style.background]="ct.category.color"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #emptyBreakdown>
+      <blui-empty-state title="No expenses yet" description="Add your first expense to see analytics.">
+        <mat-icon blui-empty-icon>insights</mat-icon>
+        <button blui-actions mat-flat-button color="primary" routerLink="/expenses">
+          Add Expense
+        </button>
+      </blui-empty-state>
+    </ng-template>
+  </mat-card>
+
+  <mat-card class="panel">
+    <h3 class="panel__title">Recent Transactions</h3>
+    <mat-divider></mat-divider>
+    <ng-container *ngIf="(recent$ | async)?.length; else emptyRecent">
+      <blui-info-list-item *ngFor="let e of recent$ | async" [divider]="'full'">
+        <mat-icon blui-icon [style.color]="getCategory(e.category).color">
+          {{ getCategory(e.category).icon }}
+        </mat-icon>
+        <div blui-title>{{ e.description }}</div>
+        <div blui-subtitle>{{ getCategory(e.category).label }}</div>
+        <div blui-right-content class="amount">{{ e.amount | currency: ((currencyCode$ | async) ?? 'USD') }}</div>
+      </blui-info-list-item>
+    </ng-container>
+    <ng-template #emptyRecent>
+      <blui-empty-state title="Nothing here yet" description="Your latest expenses will appear here.">
+        <mat-icon blui-empty-icon>receipt_long</mat-icon>
+      </blui-empty-state>
+    </ng-template>
+  </mat-card>
+</div>

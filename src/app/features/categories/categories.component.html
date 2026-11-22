@@ -1,0 +1,33 @@
+<mat-card class="list-card">
+  <h3 class="list-card__title">Categories</h3>
+  <mat-divider></mat-divider>
+  <ng-container *ngIf="(totals$ | async)?.length; else empty">
+    <blui-info-list-item
+      *ngFor="let ct of totals$ | async; trackBy: trackById"
+      [divider]="'full'"
+    >
+      <mat-icon blui-icon [style.color]="ct.category.color">{{ ct.category.icon }}</mat-icon>
+      <div blui-title>{{ ct.category.label }}</div>
+      <div blui-subtitle>{{ ct.count }} transaction{{ ct.count === 1 ? '' : 's' }}</div>
+      <div blui-right-content class="right">
+        <blui-list-item-tag
+          [label]="(ct.percentage | number: '1.0-0') + '%'"
+          [backgroundColor]="ct.category.color"
+          fontColor="#ffffff"
+        ></blui-list-item-tag>
+        <span class="amount">{{ ct.total | currency: ((currencyCode$ | async) ?? 'USD') }}</span>
+      </div>
+    </blui-info-list-item>
+  </ng-container>
+  <ng-template #empty>
+    <blui-empty-state
+      title="No category data"
+      description="Add expenses to see category breakdowns."
+    >
+      <mat-icon blui-empty-icon>category</mat-icon>
+      <button blui-actions mat-flat-button color="primary" routerLink="/expenses">
+        Add Expense
+      </button>
+    </blui-empty-state>
+  </ng-template>
+</mat-card>

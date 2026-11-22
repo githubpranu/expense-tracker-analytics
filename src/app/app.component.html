@@ -1,0 +1,63 @@
+<blui-drawer-layout variant="persistent" [width]="280">
+  <blui-drawer blui-drawer [open]="drawerOpen" [openOnHover]="false">
+    <blui-drawer-header title="Expense Tracker" subtitle="Analytics">
+      <mat-icon blui-icon>account_balance_wallet</mat-icon>
+    </blui-drawer-header>
+    <blui-drawer-body>
+      <blui-drawer-nav-group>
+        <blui-drawer-nav-item
+          *ngFor="let item of navItems"
+          [title]="item.title"
+          [selected]="activeRoute.startsWith(item.route)"
+          (select)="navigate(item.route)"
+        >
+          <mat-icon blui-icon>{{ item.icon }}</mat-icon>
+        </blui-drawer-nav-item>
+      </blui-drawer-nav-group>
+    </blui-drawer-body>
+  </blui-drawer>
+
+  <div blui-content class="app-content">
+    <mat-toolbar color="primary" class="app-toolbar">
+      <button mat-icon-button (click)="toggleDrawer()" aria-label="Toggle navigation">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="app-toolbar__title">{{ activeTitle }}</span>
+      <span class="app-toolbar__spacer"></span>
+      <button
+        mat-button
+        class="app-toolbar__currency"
+        [matMenuTriggerFor]="currencyMenu"
+        matTooltip="Change currency"
+        aria-label="Change currency"
+      >
+        <span class="app-toolbar__currency-symbol">{{ (currency$ | async)?.symbol }}</span>
+        <span>{{ (currency$ | async)?.code }}</span>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #currencyMenu="matMenu">
+        <button
+          mat-menu-item
+          *ngFor="let c of currencies"
+          (click)="setCurrency(c.code)"
+          [class.app-currency-item--active]="(currency$ | async)?.code === c.code"
+        >
+          <span class="app-currency-item__symbol">{{ c.symbol }}</span>
+          <span>{{ c.label }} ({{ c.code }})</span>
+        </button>
+      </mat-menu>
+      <button
+        mat-icon-button
+        routerLink="/expenses"
+        matTooltip="Add expense"
+        aria-label="Add expense"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <main class="app-main">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</blui-drawer-layout>

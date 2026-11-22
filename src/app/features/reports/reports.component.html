@@ -1,0 +1,41 @@
+<div class="reports-header">
+  <blui-score-card
+    class="summary"
+    headerTitle="Monthly Report"
+    headerSubtitle="Last 6 months"
+    headerInfo="Average monthly spend"
+  >
+    <div blui-body class="summary__body">
+      <blui-channel-value
+        [value]="((average$ | async) | number: '1.2-2') ?? ''"
+        [units]="(currencySymbol$ | async) ?? '$'"
+        [prefix]="true"
+        [unitSpace]="'hide'"
+      ></blui-channel-value>
+    </div>
+    <button blui-action-items mat-icon-button matTooltip="Export CSV" (click)="exportCsv()">
+      <mat-icon>download</mat-icon>
+    </button>
+  </blui-score-card>
+</div>
+
+<mat-card class="chart-card">
+  <div class="chart-card__head">
+    <h3 class="chart-card__title">Spending Trend</h3>
+    <button mat-stroked-button color="primary" (click)="exportCsv()">
+      <mat-icon>download</mat-icon>
+      <span>Export CSV</span>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="chart" *ngIf="monthly$ | async as months">
+    <div class="chart__bar-group" *ngFor="let m of months">
+      <div class="chart__bar-track">
+        <div class="chart__bar-fill" [style.height.%]="m.percentage"></div>
+      </div>
+      <div class="chart__value">{{ m.total | currency: ((currencyCode$ | async) ?? 'USD'):'symbol':'1.0-0' }}</div>
+      <div class="chart__label">{{ m.label }}</div>
+    </div>
+  </div>
+</mat-card>

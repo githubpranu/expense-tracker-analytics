@@ -1,0 +1,68 @@
+blui-drawer-layout {
+  height: 100vh;
+}
+
+:host ::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
+  background-color: transparent;
+}
+
+.app-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  &__spacer {
+    flex: 1 1 auto;
+  }
+
+  &__currency {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+
+    .mat-icon {
+      margin-left: -4px;
+    }
+  }
+
+  &__currency-symbol {
+    font-weight: 700;
+  }
+}
+
+.app-currency-item {
+  &__symbol {
+    display: inline-block;
+    width: 28px;
+    font-weight: 700;
+  }
+
+  &--active {
+    font-weight: 700;
+  }
+}
+
+.app-main {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .app-main {
+    padding: 16px;
+  }
+}

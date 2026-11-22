@@ -1,0 +1,18 @@
+// Angular Material core styles (include exactly once globally).
+// Theming is provided by Brightlayer UI via the `blui-blue` class on <body>
+// (see angular.json styles: @brightlayer-ui/angular-themes/theme.scss).
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+/* Global styles */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', Roboto, 'Helvetica Neue', sans-serif;
+  background-color: #f7f8f8;
+}
